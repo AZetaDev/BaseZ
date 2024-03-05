@@ -1,10 +1,28 @@
 <configuration>
+    <property name = "LOG_PATTERN" value = "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} [%file{1} > %M > %L] - %msg%n" />
+
     <appender name = "CONSOLE" class = "ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>${LOG_PATTERN}</pattern>
         </encoder>
     </appender>
-    <root level = "INFO">
-        <appender-ref ref = "CONSOLE"/>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/logFile-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <logger name = "org.springframework" level = "INFO" /> <!-- Logs de Spring a nivel de INFO -->
+
+    <root level = "DEBUG">
+        <appender-ref ref = "CONSOLE" />
+        <appender-ref ref = "FILE" />
     </root>
 </configuration>
