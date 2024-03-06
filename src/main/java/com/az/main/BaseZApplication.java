@@ -23,9 +23,5 @@ public class BaseZApplication {
 /*
     Next:
 
-    UNIT TESTING:
-        https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
-        https://mvnrepository.com/artifact/org.mockito/mockito-core
 
-    LOMBOK: https://mvnrepository.com/artifact/org.projectlombok/lombok
  */
