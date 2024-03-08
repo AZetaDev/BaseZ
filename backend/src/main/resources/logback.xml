@@ -19,9 +19,9 @@
         </rollingPolicy>
     </appender>
 
-    <logger name = "org.springframework" level = "INFO" /> <!-- Logs de Spring a nivel de INFO -->
+<!--    <logger name = "org.springframework" level = "INFO" /> &lt;!&ndash; Logs de Spring a nivel de INFO &ndash;&gt;-->
 
-    <root level = "DEBUG">
+    <root level = "INFO">
         <appender-ref ref = "CONSOLE" />
         <appender-ref ref = "FILE" />
     </root>
