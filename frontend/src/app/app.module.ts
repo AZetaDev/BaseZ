@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
@@ -9,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './login/components/login.component';
 import { AuthService } from './login/services/auth.service';
 import { AuthInterceptor } from './login/auth.interceptor';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -17,10 +19,11 @@ import { AuthInterceptor } from './login/auth.interceptor';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    //RouterModule.forRoot([]) // Para agregar las rutas
+    SharedModule
   ],
   providers: [
     AuthService,
