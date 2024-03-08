@@ -1,22 +1,18 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 
-import { DataService } from './data.service';
+import { AuthService } from './login/services/auth.service';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'frontend';
-  data: any;
+  title = 'Portal Z';
 
-  constructor(private dataService: DataService) {
-    this.dataService.getData().subscribe((data) => {
-      this.data = data;
-    });
+  constructor(public authService: AuthService) {}
+
+  logout() {
+    this.authService.logout();
   }
 }

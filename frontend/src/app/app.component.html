@@ -1,2 +1,12 @@
-<h1>Main Page</h1>
-<p>Just testing...</p>
+<div style="text-align:center">
+  <h1>Main Page</h1>
+  <p>Welcome to {{ title }} </p>
+  <div *ngIf="authService.isLoggedIn()">
+      <button (click)="logout()">Logout</button>
+  </div>
+  <div *ngIf="!authService.isLoggedIn()">
+      <app-login></app-login>
+  </div>
+</div>
+
+<router-outlet></router-outlet>
