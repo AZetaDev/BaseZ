@@ -19,6 +19,7 @@
         <maven.compiler.target>21</maven.compiler.target>
         <!-- VERSIONS -->
         <jwt.version>0.12.5</jwt.version>
+        <model-mapper.version>3.2.0</model-mapper.version>
     </properties>
 
     <dependencies>
@@ -35,6 +36,14 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
         </dependency>
 
         <!-- LOGS -->
@@ -68,6 +77,18 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>${model-mapper.version}</version>
+        </dependency>
+
+        <!-- DATABASES -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
         <!-- JWT -->
@@ -110,8 +131,8 @@
                             <goal>install-node-and-npm</goal>
                         </goals>
                         <configuration>
-                            <nodeVersion>20.11.1</nodeVersion>
-                            <npmVersion>10.2.4</npmVersion>
+                            <nodeVersion>18.19.0</nodeVersion>
+                            <npmVersion>10.2.3</npmVersion>
                         </configuration>
                     </execution>
                     <execution>
