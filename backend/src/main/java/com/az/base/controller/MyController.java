@@ -10,6 +10,7 @@ public class MyController {
 
     private static final Logger logger = LoggerFactory.getLogger(MyController.class);
 
+    @PreAuthorize("hasAuthority('USER', 'ADMIN')")
     @GetMapping("api/v1/salute/{name}")
     public String salute(@PathVariable String name) {
         return "Hey, " + name + "!";

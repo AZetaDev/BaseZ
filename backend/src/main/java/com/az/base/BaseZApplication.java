@@ -17,4 +17,8 @@ public class BaseZApplication {
 
 // ADD SWAGGER
 
-// ADD JWT: https://medium.com/spring-boot/spring-boot-3-spring-security-6-jwt-authentication-authorization-98702d6313a5
+//https://gitlab.com/myusufalpian/spring-boot-3.2-jwt-authentication
+//https://levelup.gitconnected.com/jwt-authorization-with-spring-boot-3-and-spring-security-6-69dfd11321ff
+//https://medium.com/@HereAndBeyond/spring-boot-3-jwt-authorization-based-on-a-secret-key-ababbb3a3350
+//https://bootify.io/spring-security/rest-api-spring-security-with-jwt.html
+//https://spring.io/guides/tutorials/spring-security-and-angular-js
