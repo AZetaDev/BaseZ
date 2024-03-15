@@ -1,6 +1,7 @@
 package com.az.base.config;
 
 import com.az.base.filter.JwtAuthFilter;
+import com.az.base.service.JwtAuthenticationEntryPoint;
 import com.az.base.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +29,9 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthFilter authFilter;
 
+    @Autowired
+    private JwtAuthenticationEntryPoint unauthorizedHandler;
+
     // User Creation
     @Bean
     public UserDetailsService userDetailsService() {
@@ -45,6 +49,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests.requestMatchers("/auth/user/**", "/auth/admin/**").authenticated()
                 )
+                .exceptionHandling(customizer -> customizer.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
