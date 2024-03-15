@@ -1,7 +1,7 @@
 package com.az.base.config;
 
-import com.az.base.service.UserDetailsServiceImpl;
-import com.az.base.util.JwtAuthFilter;
+import com.az.base.filter.JwtAuthFilter;
+import com.az.base.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,32 +26,32 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     @Autowired
-    JwtAuthFilter jwtAuthFilter;
+    private JwtAuthFilter authFilter;
 
+    // User Creation
     @Bean
     public UserDetailsService userDetailsService() {
-        return new UserDetailsServiceImpl();
+        return new UserInfoService();
     }
 
+    // Configuring HttpSecurity
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement((sessionManagement) ->
-                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .authorizeHttpRequests(authorizeRequests ->
+                    authorizeRequests.requestMatchers("/auth/welcome", "/auth/addNewUser", "/auth/generateToken").permitAll()
                 )
-                .authorizeHttpRequests((authorizeRequests) ->
-                        authorizeRequests.requestMatchers("/api/v1/login").permitAll()
+                .authorizeHttpRequests(authorizeRequests ->
+                        authorizeRequests.requestMatchers("/auth/user/**", "/auth/admin/**").authenticated()
                 )
-                .authorizeHttpRequests((authorizeRequests) ->
-                        authorizeRequests.requestMatchers("/api/v1/**").authenticated()
-                )
+                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class).build();
-
+                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
+    // Password Encoding
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -63,7 +63,6 @@ public class SecurityConfig {
         authenticationProvider.setUserDetailsService(userDetailsService());
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
-
     }
 
     @Bean

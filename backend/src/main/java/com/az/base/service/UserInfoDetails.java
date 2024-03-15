@@ -1,28 +1,27 @@
-package com.az.base.model.entity;
+package com.az.base.service;
 
+import com.az.base.dto.UserInfo;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class CustomUserDetails extends UserInfo implements UserDetails {
+public class UserInfoDetails implements UserDetails {
 
-    private String username;
+    private String name;
     private String password;
-    Collection<? extends GrantedAuthority> authorities;
+    private List<GrantedAuthority> authorities;
 
-    public CustomUserDetails(UserInfo userInfo) {
-        this.username = userInfo.getUsername();
-        this.password = userInfo.getPassword();
-        List<GrantedAuthority> auths = new ArrayList<>();
-
-        for(UserRole role : userInfo.getRoles()){
-            auths.add(new SimpleGrantedAuthority(role.getName().toUpperCase()));
-        }
-        this.authorities = auths;
+    public UserInfoDetails(UserInfo userInfo) {
+        name = userInfo.getName();
+        password = userInfo.getPassword();
+        authorities = Arrays.stream(userInfo.getRoles().split(","))
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -37,7 +36,7 @@ public class CustomUserDetails extends UserInfo implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return name;
     }
 
     @Override
@@ -60,3 +59,4 @@ public class CustomUserDetails extends UserInfo implements UserDetails {
         return true;
     }
 }
+
