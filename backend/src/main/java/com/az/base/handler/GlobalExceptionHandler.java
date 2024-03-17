@@ -15,8 +15,12 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    private final HttpServletRequest request;
+
     @Autowired
-    private HttpServletRequest request;
+    public GlobalExceptionHandler(HttpServletRequest request) {
+        this.request = request;
+    }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorMessage> handleAccessDeniedException(AccessDeniedException ex) {
@@ -36,19 +40,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ExpiredJwtException.class)
     public ResponseEntity<ErrorMessage> handleExpiredJwtException(ExpiredJwtException ex) {
         return createErrorMessage(ex);
-    }
-
-    @ExceptionHandler(io.jsonwebtoken.ExpiredJwtException.class)
-    public ResponseEntity<ErrorMessage> handleNormalExpiredJwtException(io.jsonwebtoken.ExpiredJwtException ex) {
-        ErrorMessage errorMessage = new ErrorMessage(
-                HttpStatus.FORBIDDEN.value(),
-                "JWT CADUCAO! Menuda CAGADA!",
-                "TEAAAA POOOOOOOT",
-                ex.getMessage(),
-                request.getRequestURI(),
-                LocalDateTime.now()
-        );
-        return new ResponseEntity<>(errorMessage, HttpStatus.I_AM_A_TEAPOT);
     }
 
     @ExceptionHandler(ForbiddenException.class)

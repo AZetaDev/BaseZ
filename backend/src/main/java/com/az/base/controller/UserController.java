@@ -19,16 +19,20 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class UserController {
 
-    @Autowired
-    private UserInfoService service;
+    private final UserInfoService userInfoService;
 
-    @Autowired
-    private JwtService jwtService;
+    private final JwtService jwtService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
+    @Autowired
+    public UserController(UserInfoService userInfoService, JwtService jwtService, AuthenticationManager authenticationManager) {
+        this.userInfoService = userInfoService;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
+    }
 
     @GetMapping("/welcome")
     public String welcome() {
@@ -37,7 +41,7 @@ public class UserController {
 
     @PostMapping("/addNewUser")
     public String addNewUser(@RequestBody UserInfo user) {
-        return service.addUser(user);
+        return userInfoService.addUser(user);
     }
 
     @GetMapping("/user/userProfile")
@@ -55,18 +59,17 @@ public class UserController {
     @PostMapping("/generateToken")
     public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
 
-        Authentication authentication;
+        Authentication authentication = null;
         try {
             authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
         } catch (AuthenticationException ex) {
-            logger.error("[AZ] - Authentication failed: " + ex.getMessage());
-            throw ex;
+            logger.error("[AZ] - Authentication failed: {}", ex.getMessage());
         }
 
-        if (authentication.isAuthenticated()) {
+        if (authentication != null && authentication.isAuthenticated()) {
             logger.info("[AZ] - Authenticated");
             String token = jwtService.generateToken(authRequest.getUsername());
-            logger.info("[AZ] - Generated token: " + token);
+            logger.info("[AZ] - Generated token: {}", token);
             return token;
         } else {
             logger.info("[AZ] - Not Authenticated");

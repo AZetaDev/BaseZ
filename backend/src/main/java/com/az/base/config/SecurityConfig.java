@@ -26,11 +26,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private JwtAuthFilter authFilter;
+    private final JwtAuthFilter authFilter;
+
+    private final JwtAuthenticationEntryPoint unauthorizedHandler;
 
     @Autowired
-    private JwtAuthenticationEntryPoint unauthorizedHandler;
+    public SecurityConfig(JwtAuthFilter authFilter, JwtAuthenticationEntryPoint entryPoint){
+        this.authFilter = authFilter;
+        this.unauthorizedHandler = entryPoint;
+    }
 
     // User Creation
     @Bean
